@@ -1,0 +1,76 @@
+#colorize-ui-root {
+  all: initial;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483646;
+  pointer-events: none;
+  display: none;
+}
+
+#colorize-ui-root[data-active="true"] {
+  display: block;
+}
+
+#colorize-ui-border {
+  position: absolute;
+  inset: 0;
+  border-style: solid;
+  border-color: var(--colorize-ui-color, #f59e0b);
+  border-width: var(--colorize-ui-border-width, 6px);
+  box-sizing: border-box;
+}
+
+#colorize-ui-banner {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: min(92vw, 520px);
+  padding: 6px 14px;
+  border-radius: 0 0 10px 10px;
+  background: var(--colorize-ui-color, #f59e0b);
+  color: #111;
+  font: 700 12px/1.3 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  pointer-events: auto;
+  cursor: default;
+  user-select: none;
+}
+
+#colorize-ui-banner[hidden] {
+  display: none !important;
+}
+
+#colorize-ui-banner .colorize-ui-host {
+  font-weight: 500;
+  opacity: 0.85;
+  text-transform: none;
+  letter-spacing: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#colorize-ui-dismiss {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 4px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.15);
+  color: inherit;
+  font: 700 12px/1 sans-serif;
+  cursor: pointer;
+}
+
+#colorize-ui-dismiss:hover {
+  background: rgba(0, 0, 0, 0.28);
+}
