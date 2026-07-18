@@ -31,14 +31,16 @@
 
     <section class="section">
       <label class="field">
-        <span>監視ドメイン（1行1ドメイン）</span>
+        <span>確認対象ドメイン（1行1ドメイン）</span>
         <textarea
           id="domains"
           rows="3"
-          placeholder="空欄 = 全ドメイン&#10;example.com&#10;myapp.internal"
+          placeholder="example.com&#10;myapp.internal"
         ></textarea>
       </label>
-      <p class="hint">指定したドメイン配下で、hostname に dev / stg などがあれば色を付けます。</p>
+      <p class="hint">
+        指定ドメイン配下で dev / stg などを色分け。prefix が無い場合は PROD（赤）です。
+      </p>
     </section>
 
     <section class="section checks">

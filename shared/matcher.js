@@ -20,12 +20,12 @@
   }
 
   /**
-   * 指定ドメイン配下かどうか。domains が空なら全許可。
+   * 指定ドメイン配下かどうか。
    * @param {string} hostname
    * @param {string[]} domains
    */
   function isWatchedDomain(hostname, domains) {
-    if (!domains || domains.length === 0) return true;
+    if (!domains || domains.length === 0) return false;
     const host = hostname.toLowerCase();
     return domains.some((raw) => {
       const domain = String(raw || "")
@@ -38,6 +38,15 @@
   }
 
   /**
+   * @param {import('./defaults.js').EnvRule[]} environments
+   */
+  function findFallbackEnv(environments) {
+    return (
+      environments.find((e) => e && e.enabled !== false && e.fallback) || null
+    );
+  }
+
+  /**
    * @param {string} hostname
    * @param {import('./defaults.js').Settings} settings
    */
@@ -45,18 +54,30 @@
     if (!settings?.enabled) {
       return { matched: false, env: null };
     }
-    if (!isWatchedDomain(hostname, settings.domains || [])) {
+
+    const domains = settings.domains || [];
+    const hasDomains = domains.some((d) => String(d || "").trim());
+    // 確認対象ドメイン未設定時は色付けしない（誤って全サイトを PROD 赤にしない）
+    if (!hasDomains || !isWatchedDomain(hostname, domains)) {
       return { matched: false, env: null };
     }
 
     const envs = (settings.environments || []).filter(
       (e) => e && e.enabled !== false
     );
+
     for (const env of envs) {
       if (hostnameMatchesPattern(hostname, env.patterns || [])) {
         return { matched: true, env };
       }
     }
+
+    // prefix なし（例: example.com / www.example.com / app.example.com）→ PROD
+    const fallback = findFallbackEnv(envs);
+    if (fallback) {
+      return { matched: true, env: fallback };
+    }
+
     return { matched: false, env: null };
   }
 
@@ -65,5 +86,6 @@
     hostnameMatchesPattern,
     isWatchedDomain,
     detectEnvironment,
+    findFallbackEnv,
   });
 })();

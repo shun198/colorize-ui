@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Colorize UI",
-  "version": "1.0.0",
-  "description": "指定ドメイン内に dev / stg などの環境キーワードがあると、ページUIの色を変えて環境を一目で判別できます。",
+  "version": "1.1.0",
+  "description": "確認対象ドメイン内の dev / stg、および prefix なしの本番を色分けして、環境を一目で判別できます。",
   "permissions": ["storage", "activeTab", "tabs"],
   "host_permissions": ["<all_urls>"],
   "background": {

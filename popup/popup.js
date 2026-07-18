@@ -53,6 +53,12 @@
       els.statusDetail.textContent = hostname;
       return;
     }
+    if (!(settings.domains || []).length) {
+      els.swatch.hidden = true;
+      els.statusTitle.textContent = "ドメイン未設定";
+      els.statusDetail.textContent = "確認対象ドメインを入力して保存";
+      return;
+    }
     if (matched && env) {
       els.swatch.hidden = false;
       els.swatch.style.background = env.color;
@@ -61,7 +67,7 @@
       return;
     }
     els.swatch.hidden = true;
-    els.statusTitle.textContent = "環境キーワードなし";
+    els.statusTitle.textContent = "確認対象外のドメイン";
     els.statusDetail.textContent = hostname;
   }
 
@@ -80,10 +86,11 @@
   }
 
   els.save.addEventListener("click", async () => {
+    const domains = textToDomains(els.domains.value);
     settings = {
       ...settings,
       enabled: els.enabled.checked,
-      domains: textToDomains(els.domains.value),
+      domains,
       showBanner: els.showBanner.checked,
       showBorder: els.showBorder.checked,
     };
@@ -91,9 +98,12 @@
     const hostname = await getActiveHostname();
     renderStatus(hostname);
     els.toast.hidden = false;
+    els.toast.textContent = domains.length
+      ? "保存しました"
+      : "保存しました（ドメイン未設定のため色付けなし）";
     setTimeout(() => {
       els.toast.hidden = true;
-    }, 1200);
+    }, 1400);
   });
 
   els.enabled.addEventListener("change", async () => {

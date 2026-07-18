@@ -66,6 +66,17 @@
     delete rootEl.dataset.envId;
   }
 
+  function bannerTextColor(hex) {
+    const raw = String(hex || "").replace("#", "");
+    if (!/^[0-9a-fA-F]{6}$/.test(raw)) return "#111111";
+    const r = parseInt(raw.slice(0, 2), 16);
+    const g = parseInt(raw.slice(2, 4), 16);
+    const b = parseInt(raw.slice(4, 6), 16);
+    // 相対輝度が低い（赤など）は白文字
+    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+    return luminance < 0.55 ? "#ffffff" : "#111111";
+  }
+
   function applyUi(settings, env) {
     ensureUi();
     rootEl.setAttribute("data-active", "true");
@@ -74,6 +85,10 @@
     rootEl.style.setProperty(
       "--colorize-ui-border-width",
       `${Number(settings.borderWidth) || 6}px`
+    );
+    rootEl.style.setProperty(
+      "--colorize-ui-banner-ink",
+      bannerTextColor(env.color)
     );
 
     borderEl.style.display = settings.showBorder === false ? "none" : "block";

@@ -41,12 +41,19 @@
       .filter(Boolean);
   }
 
+  function exclusiveFallback(selected) {
+    for (const input of els.envList.querySelectorAll(".env-fallback")) {
+      if (input !== selected) input.checked = false;
+    }
+  }
+
   function createEnvRow(env) {
     const node = els.template.content.firstElementChild.cloneNode(true);
     const label = node.querySelector(".env-label");
     const patterns = node.querySelector(".env-patterns");
     const color = node.querySelector(".env-color");
     const enabled = node.querySelector(".env-enabled");
+    const fallback = node.querySelector(".env-fallback");
     const remove = node.querySelector(".env-remove");
 
     node.dataset.id = env.id;
@@ -54,6 +61,11 @@
     patterns.value = (env.patterns || []).join(", ");
     color.value = /^#[0-9a-fA-F]{6}$/.test(env.color) ? env.color : "#f59e0b";
     enabled.checked = env.enabled !== false;
+    fallback.checked = !!env.fallback;
+
+    fallback.addEventListener("change", () => {
+      if (fallback.checked) exclusiveFallback(fallback);
+    });
 
     remove.addEventListener("click", () => {
       node.remove();
@@ -92,6 +104,7 @@
         patterns,
         color: row.querySelector(".env-color").value || "#f59e0b",
         enabled: row.querySelector(".env-enabled").checked,
+        fallback: row.querySelector(".env-fallback").checked,
       };
     });
   }
@@ -119,6 +132,7 @@
         patterns: ["custom"],
         color: "#ef4444",
         enabled: true,
+        fallback: false,
       })
     );
   });
@@ -127,6 +141,15 @@
     settings = readForm();
     if (!settings.environments.length) {
       showToast("環境ルールを1つ以上追加してください");
+      return;
+    }
+    if (!settings.domains.length) {
+      showToast("確認対象ドメインを1件以上指定してください");
+      return;
+    }
+    const fallbackCount = settings.environments.filter((e) => e.fallback).length;
+    if (fallbackCount === 0) {
+      showToast("prefixなし用の環境ルールを1つ選んでください");
       return;
     }
     await saveSettings(settings);

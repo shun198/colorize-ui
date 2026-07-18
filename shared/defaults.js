@@ -1,11 +1,11 @@
 (() => {
-  /** @typedef {{ id: string, label: string, patterns: string[], color: string, enabled: boolean }} EnvRule */
+  /** @typedef {{ id: string, label: string, patterns: string[], color: string, enabled: boolean, fallback?: boolean }} EnvRule */
   /** @typedef {{ enabled: boolean, domains: string[], showBanner: boolean, showBorder: boolean, borderWidth: number, environments: EnvRule[] }} Settings */
 
   /** @type {Settings} */
   const DEFAULT_SETTINGS = {
     enabled: true,
-    // 空の場合は全ドメインが対象。指定するとそのドメイン配下のみ色変更する。
+    // 確認対象ドメイン。PROD（prefixなし）判定には1件以上の指定が必要。
     domains: [],
     showBanner: true,
     showBorder: true,
@@ -38,6 +38,15 @@
         patterns: ["qa", "test", "testing"],
         color: "#14b8a6",
         enabled: true,
+      },
+      {
+        id: "prod",
+        label: "PROD",
+        patterns: ["prod", "prd", "production"],
+        color: "#dc2626",
+        enabled: true,
+        // 監視ドメイン配下で他環境に当てはまらない場合も PROD 扱い
+        fallback: true,
       },
     ],
   };

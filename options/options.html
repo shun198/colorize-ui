@@ -12,9 +12,29 @@
         <img src="../icons/icon128.png" alt="" width="56" height="56" />
         <div>
           <h1>Colorize UI</h1>
-          <p>指定ドメイン内の hostname に環境キーワードがあると、枠線とバナーで色分けします。</p>
+          <p>
+            確認対象ドメインを指定し、hostname の環境キーワード（または prefix なし = PROD）で
+            枠線とバナーの色を変えます。
+          </p>
         </div>
       </header>
+
+      <section class="panel">
+        <h2>確認対象ドメイン</h2>
+        <p class="help">
+          色分けしたいサービスのドメインを1行ずつ指定してください。未指定のあいだはどのページにも色は付きません。
+          ここに書いたドメイン配下で、<code>dev</code> / <code>stg</code> などの prefix が無い hostname は
+          <strong>PROD（赤）</strong> として扱います。
+        </p>
+        <label class="stack">
+          <span>ドメイン一覧</span>
+          <textarea
+            id="domains"
+            rows="5"
+            placeholder="example.com&#10;myapp.internal"
+          ></textarea>
+        </label>
+      </section>
 
       <section class="panel">
         <h2>基本</h2>
@@ -34,14 +54,6 @@
           <span>枠線の太さ（px）</span>
           <input id="border-width" type="number" min="2" max="24" step="1" />
         </label>
-        <label class="stack">
-          <span>監視ドメイン（1行1ドメイン。空欄 = 全ドメイン）</span>
-          <textarea
-            id="domains"
-            rows="5"
-            placeholder="example.com&#10;myapp.internal"
-          ></textarea>
-        </label>
       </section>
 
       <section class="panel">
@@ -50,8 +62,8 @@
           <button id="add-env" type="button">ルールを追加</button>
         </div>
         <p class="help">
-          上から順に判定します。hostname のラベル境界（ドット / ハイフン / アンダースコア）で
-          <code>dev</code> / <code>stg</code> などを検出します。
+          上から順にキーワード判定します。「prefixなし用」にチェックしたルールは、
+          どのキーワードにも当てはまらない確認対象ドメインのフォールバック（既定: PROD 赤）になります。
         </p>
         <div id="env-list" class="env-list"></div>
       </section>
@@ -80,6 +92,10 @@
         <label class="enable">
           <input class="env-enabled" type="checkbox" />
           有効
+        </label>
+        <label class="enable fallback" title="確認対象ドメインでキーワード不一致時にこの色を使う">
+          <input class="env-fallback" type="checkbox" name="env-fallback" />
+          prefixなし用
         </label>
         <button class="env-remove" type="button" title="削除">削除</button>
       </article>
