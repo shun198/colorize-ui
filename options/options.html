@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Colorize UI — 詳細設定</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header class="hero">
+        <img src="../icons/icon128.png" alt="" width="56" height="56" />
+        <div>
+          <h1>Colorize UI</h1>
+          <p>
+            確認対象ドメインを指定し、hostname の環境キーワード（または prefix なし = PROD）で
+            枠線とバナーの色を変えます。
+          </p>
+        </div>
+      </header>
+
+      <section class="panel">
+        <h2>確認対象ドメイン</h2>
+        <p class="help">
+          色分けしたいサービスのドメインを1行ずつ指定してください。未指定のあいだはどのページにも色は付きません。
+          ここに書いたドメイン配下で、<code>dev</code> / <code>stg</code> などの prefix が無い hostname は
+          <strong>PROD（赤）</strong> として扱います。
+        </p>
+        <label class="stack">
+          <span>ドメイン一覧</span>
+          <textarea
+            id="domains"
+            rows="5"
+            placeholder="example.com&#10;myapp.internal"
+          ></textarea>
+        </label>
+      </section>
+
+      <section class="panel">
+        <h2>基本</h2>
+        <label class="row">
+          <span>拡張機能を有効化</span>
+          <input id="enabled" type="checkbox" />
+        </label>
+        <label class="row">
+          <span>バナーを表示</span>
+          <input id="show-banner" type="checkbox" />
+        </label>
+        <label class="row">
+          <span>枠線を表示</span>
+          <input id="show-border" type="checkbox" />
+        </label>
+        <label class="stack">
+          <span>枠線の太さ（px）</span>
+          <input id="border-width" type="number" min="2" max="24" step="1" />
+        </label>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>環境ルール</h2>
+          <button id="add-env" type="button">ルールを追加</button>
+        </div>
+        <p class="help">
+          上から順にキーワード判定します。「prefixなし用」にチェックしたルールは、
+          どのキーワードにも当てはまらない確認対象ドメインのフォールバック（既定: PROD 赤）になります。
+        </p>
+        <div id="env-list" class="env-list"></div>
+      </section>
+
+      <div class="actions">
+        <button id="save" class="primary" type="button">保存</button>
+        <button id="reset" type="button">初期設定に戻す</button>
+        <span id="toast" class="toast" hidden></span>
+      </div>
+    </main>
+
+    <template id="env-row-template">
+      <article class="env-row">
+        <label class="stack compact">
+          <span>ラベル</span>
+          <input class="env-label" type="text" placeholder="DEV" />
+        </label>
+        <label class="stack compact">
+          <span>キーワード（カンマ区切り）</span>
+          <input class="env-patterns" type="text" placeholder="dev, develop" />
+        </label>
+        <label class="stack compact color">
+          <span>色</span>
+          <input class="env-color" type="color" />
+        </label>
+        <label class="enable">
+          <input class="env-enabled" type="checkbox" />
+          有効
+        </label>
+        <label class="enable fallback" title="確認対象ドメインでキーワード不一致時にこの色を使う">
+          <input class="env-fallback" type="checkbox" name="env-fallback" />
+          prefixなし用
+        </label>
+        <button class="env-remove" type="button" title="削除">削除</button>
+      </article>
+    </template>
+
+    <script src="../shared/defaults.js"></script>
+    <script src="../shared/storage.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>
