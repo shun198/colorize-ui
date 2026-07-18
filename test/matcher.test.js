@@ -46,6 +46,10 @@ assert.strictEqual(
   "DEV"
 );
 assert.strictEqual(
+  detectEnvironment("dev.example.com", settings).env.color,
+  "#16a34a"
+);
+assert.strictEqual(
   detectEnvironment("api-stg.example.com", settings).env.label,
   "STG"
 );

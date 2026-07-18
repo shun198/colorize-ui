@@ -22,7 +22,7 @@
         id: "dev",
         label: "DEV",
         patterns: ["dev", "develop", "development"],
-        color: "#f59e0b",
+        color: "#16a34a",
         enabled: true,
       },
       {

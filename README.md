@@ -17,7 +17,7 @@
 | 環境 | キーワード | 色 |
 | --- | --- | --- |
 | LOCAL | `local`, `localhost` | 青 |
-| DEV | `dev`, `develop`, `development` | オレンジ |
+| DEV | `dev`, `develop`, `development` | 緑 |
 | STG | `stg`, `stage`, `staging` | 黄 |
 | QA | `qa`, `test`, `testing` | ティール |
 | PROD | `prod`, `prd`, `production` / **prefixなし** | 赤 |
@@ -37,7 +37,7 @@
 1. 拡張機能アイコン（または詳細設定）を開く
 2. **確認対象ドメイン**を入力（例: `example.com`）して保存
 3. 以下のように色分けされます
-   - `dev.example.com` → DEV（オレンジ）
+   - `dev.example.com` → DEV（緑）
    - `stg.example.com` → STG（黄）
    - `example.com` / `www.example.com` → PROD（赤）
 4. 色やキーワードの追加は「詳細設定」から
